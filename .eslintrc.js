@@ -26,6 +26,8 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     //设置不添加分号会报错
-    'semi': ['error','always']
+    'semi': ['error','always'],
+    'indent':0,
+    'space-before-function-paren':0
   }
 }
