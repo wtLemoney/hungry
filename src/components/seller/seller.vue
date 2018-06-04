@@ -1,16 +1,15 @@
 <template>
- <div class="header">
-     IamHeader!
+ <div>
+     I am seller!
  </div>
 </template>
 
 <script>
- export default {
+export default {
 
- };
+};
 </script>
 
 <style>
 
- 
 </style>
