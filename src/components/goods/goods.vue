@@ -1,17 +1,17 @@
 <template>
  <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menuWrapper"><!-- 左侧分类栏 -->
         <ul>
-            <li v-for="(item,index) in goods" class="menu-item" :key="index">
+            <li v-for="(item,index) in goods" class="menu-item" @click="selectMenu(index)" :class="{'current':currentIndex===index}" :key="index">
                 <span class="text border-1px">
                     <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
                 </span>
             </li>
         </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" ref="foodsWrapper"><!-- 右侧食物栏 -->
         <ul>
-            <li v-for="(item,index) in goods" class="food-list" :key="index">
+            <li v-for="(item,index) in goods" class="food-list food-list-hook" :key="index">
                 <h1 class="title">{{item.name}}</h1>
                 <ul>
                     <li v-for="(food,index) in item.foods" class="food-item border-1px" :key="index">
@@ -22,12 +22,10 @@
                             <h2 class="name">{{food.name}}</h2>
                             <p class="desc">{{food.description}}</p>
                             <div class="extra">
-                                <span class="count">月售{{food.sellCount}}份</span>
-                                <span>好评率{{food.rating}}%</span>
+                                <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                             </div>
                             <div class="price">
-                                <span class="now">￥{{food.price}}</span>
-                                <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
+                                <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                             </div>
                         </div>
                     </li>
@@ -39,6 +37,8 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll';
+
 const ERR_OK = 0;
  export default {
      props:{
@@ -48,8 +48,22 @@ const ERR_OK = 0;
      },
      data(){
          return {
-             goods: []
+             goods: [],
+             listHeight: [],//获取每个食物的高度
+             scrollY: 0
          };
+     },
+     computed: {
+         currentIndex() {
+             for(let i=0;i<this.listHeight.length;i++){
+                 let height1 = this.listHeight[i];
+                 let height2 = this.listHeight[i+1];
+                 if(!height2 || (this.scrollY >= height1&& this.scrollY < height2)){
+                     return i;
+                 }
+             }
+             return 0;
+         }
      },
      created(){
          this.classMap=['decrease','discount','special','invoice','guarantee'];
@@ -59,9 +73,41 @@ const ERR_OK = 0;
             //  console.log(response);
              if(response.errno === ERR_OK){
                  this.goods = response.data;
-                 console.log(this.goods);
+                //  console.log(this.goods);
+                this.$nextTick(()=>{//$nextTick 是在下次 DOM 更新循环结束之后执行延迟回调
+                 this._initScroll();
+                 this._calculateHeight();
+                });
              }
          })
+     },
+     methods: {
+         selectMenu(index){
+             let foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-hook");
+             let el = foodList[index];
+             this.foodsScroll.scrollToElement(el,300);
+         },
+         _initScroll() {
+             this.menuScroll = new BScroll('.menu-wrapper',{click: true});
+             this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
+                 probeType: 3 //实时监测位置
+             });
+            //  this.foodsScroll = new BScroll('.foods-wrapper');
+
+            this.foodsScroll.on('scroll',(pos)=>{
+                this.scrollY = Math.abs(Math.round(pos.y));
+            })
+         },
+         _calculateHeight(){
+             let foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-hook");
+             let height = 0;
+             this.listHeight.push(height);
+             for(let i=0;i<foodList.length;i++){
+                 let item=foodList[i];
+                 height += item.clientHeight;
+                 this.listHeight.push(height);
+             }
+         }
      }
  };
 </script>
@@ -86,6 +132,14 @@ const ERR_OK = 0;
                 width 56px
                 padding 0 12px
                 line-height 14px
+                &.current
+                    position relative
+                    z-index 10
+                    margin-top -1px
+                    background #ffffff
+                    font-weight 1000
+                    .text
+                        border-none()
                 .icon
                     display inline-block
                     vertical-align top
@@ -144,9 +198,10 @@ const ERR_OK = 0;
                         font-size 10px
                         color rgb(147,153,159)
                     .desc
+                        line-height 12px
                         margin-bottom 8px
                     .extra
-                        &.count
+                        .count
                             margin-right 12px
                     .price
                         font-weight 700

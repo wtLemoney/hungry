@@ -34,7 +34,7 @@ let router = new VueRouter({// 实例化路由
 // });
 
 /* eslint-disable no-new */
-const app = new Vue({
+new Vue({
   el: '#app',
   router: router,
   render: h => h(App)
