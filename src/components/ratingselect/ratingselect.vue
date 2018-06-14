@@ -5,7 +5,7 @@
             <span @click="select(0)" class="block positive" :class="{'active':selecttype===0}">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
             <span @click="select(1)" class="block negative" :class="{'active':selecttype===1}">{{desc.negative}}<span class="count">{{negatives.length}}</span></span>
         </div>
-        <div @click="toggleContent" class="switch" :class="{'on':onlyContent===true}">
+        <div @click="toggleContent" class="switch" :class="{'on':onlycontent===true}">
             <span class="icon-check_circle"></span>
             <span class="text">只看有内容的评价</span>
         </div>
@@ -31,7 +31,7 @@ export default {
         },
         onlyContent: {
             type: Boolean,
-            default: false
+            default: true
         },
         desc: {
             type: Object,
@@ -46,7 +46,8 @@ export default {
     },
     data () {
         return {
-            selecttype: this.selectType //selectType不可写，为了防止子组件无意修改了父组件的状态
+            selecttype: this.selectType, //selectType不可写，为了防止子组件无意修改了父组件的状态
+            onlycontent: this.onlyContent
         }
     },
     computed: {
@@ -67,14 +68,14 @@ export default {
                 return;
             }
             this.selecttype = type;
-            // this.$emit('ratingtype.select',type);//子组件告诉父组件的变化
+            this.$emit('ratingtype-select',type);//子组件告诉父组件的变化
         },
         toggleContent(){
             if(!event._constructed) {
                 return;
             }
-            this.onlyContent = !this.onlyContent;
-            // this.$emit('content.toggle',this.onlyContent);
+            this.onlycontent = !this.onlycontent;
+            this.$emit('content-toggle',this.onlycontent);
         }
     }
 }
