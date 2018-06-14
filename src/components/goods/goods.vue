@@ -14,7 +14,7 @@
             <li v-for="(item,index) in goods" class="food-list food-list-hook" :key="index">
                 <h1 class="title">{{item.name}}</h1>
                 <ul>
-                    <li v-for="(food,index) in item.foods" class="food-item border-1px" :key="index">
+                    <li @click="selectFood(food)" v-for="(food,index) in item.foods" class="food-item border-1px" :key="index">
                         <div class="icon">
                             <img width="57" height="57" :src="food.icon">
                         </div>
@@ -37,13 +37,15 @@
         </ul>
     </div>
     <shopcart ref='shopcart' :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <food :food="selectedFood" ref="food"></food>
  </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll';
 import shopcart from '../shopcart/shopcart';
-import cartcontrol from '../cartcontrol/cartcontrol'
+import cartcontrol from '../cartcontrol/cartcontrol';
+import food from '../food/food';
 
 const ERR_OK = 0;
  export default {
@@ -56,7 +58,8 @@ const ERR_OK = 0;
          return {
              goods: [],
              listHeight: [],//获取每个食物的高度
-             scrollY: 0
+             scrollY: 0,
+             selectedFood: {}
          };
      },
      computed: {
@@ -113,7 +116,7 @@ const ERR_OK = 0;
             });
          },
 
-         _initScroll() {
+         _initScroll() {//下划线开头的表示私有，不能被外部调用
              this.menuScroll = new BScroll('.menu-wrapper',{click: true});
              this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
                  click: true,
@@ -135,11 +138,20 @@ const ERR_OK = 0;
                  this.listHeight.push(height);
              }
          },
+
+         selectFood(food) {//打开food详情页
+             if(!event._constructed){
+                 return;
+             }
+             this.selectedFood =food;
+             this.$refs.food.show();//拿到food组件并调用它的show方法
+         }
       
      },
      components: {
          shopcart,
-         cartcontrol
+         cartcontrol,
+         food
      },
     //  events: { //子组件传进来
     //      'cart-add'(target){

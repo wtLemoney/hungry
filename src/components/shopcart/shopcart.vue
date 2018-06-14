@@ -18,12 +18,19 @@
         </div>
 
         <div class="ball-container">
-            <transition-group name="drop"  
-            v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">
+            <!-- <transition-group name="drop"  
+            @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
                 <div v-for="(ball,index) in balls" v-show="ball.show" :key="index" class="ball">
                     <div class="inner inner-hook"></div>
                 </div>
-            </transition-group>
+            </transition-group> -->
+            <div v-for="(ball,index) in balls" :key="index">
+                <transition name="drop" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+                    <div v-show="ball.show" class="ball">
+                        <div class="inner inner-hook"></div>
+                    </div>
+                </transition>
+            </div>
         </div>
 
         <transition name="fold">
@@ -207,9 +214,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
             });
         },
         afterEnter(el) {
-            console.log(this.dropBalls)
             let ball = this.dropBalls.shift(); // 完成一次动画就删除一个dropBalls的小球
-            console.log(this.dropBalls)
             if(ball){
                 ball.show = false;
                 el.style.display ='none';
@@ -328,9 +333,10 @@ import cartcontrol from '../cartcontrol/cartcontrol'
         left 0
         z-index -1
         width 100%
-        transition all 0.5s
+        transition all 0.5s linear 
         transform translate3d(0,-100%,0)
-        &.fold-enter-active,&.fold-enter-active
+        &.fold-enter-active,&.fold-leave-active
+            // transition all 0.5s linear 
             transform translate3d(0,0,0)
         .list-header
             height 40px
