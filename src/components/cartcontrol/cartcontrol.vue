@@ -19,14 +19,6 @@ import Vue from 'vue';//可使用Vue.set()
             type: Object
         }
     },
-    data () {
-        return {
-            
-        }
-    },
-    created() {
-        
-    },
     methods: {
         addCart(event) {
             if(!event._constructed){//减少网页点击时的每次双击
@@ -38,7 +30,7 @@ import Vue from 'vue';//可使用Vue.set()
             }else{
                 this.food.count++;
             }
-            // this.$dispatch('cart.add',event.target);//把加号的位置传给父组件
+            // this.$dispatch('cart.add',event.target);//vue1.0,把加号的位置传给父组件
             this.$emit('cart-add',event.target);
         },
         decreaseCart() {

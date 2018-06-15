@@ -107,7 +107,7 @@ const ALL = 2;
         show() {//父组件goods调用的子组件的方法
             this.showFlag = true;
             this.selectType = ALL;
-            this.onlyContent = true;
+            this.onlyContent = false;
             this.$nextTick(()=>{//保证dom渲染完成再执行
                 if(!this.scroll){
                     this.scroll = new BScroll(this.$refs.food,{click: true});
@@ -143,13 +143,13 @@ const ALL = 2;
             this.selectType = type;
             this.$nextTick(()=>{//解决better-scroll问题
                 this.scroll.refresh();
-            })
+            });
         },
         contentToggle(onlyContent) {
             this.onlyContent = onlyContent;
             this.$nextTick(()=>{
                 this.scroll.refresh();
-            })
+            });
         }
 
     },

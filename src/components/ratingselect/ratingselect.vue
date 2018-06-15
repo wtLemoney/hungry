@@ -68,7 +68,7 @@ export default {
                 return;
             }
             this.selecttype = type;
-            this.$emit('ratingtype-select',type);//子组件告诉父组件的变化
+            this.$emit('ratingtype-select',this.selecttype);//子组件告诉父组件的变化
         },
         toggleContent(){
             if(!event._constructed) {

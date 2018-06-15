@@ -157,7 +157,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                     if(!ball.show){
                         ball.show = true;
                         ball.el = el;
-                        this.dropBalls.push(ball);
+                        this.dropBalls.push(ball);//dropBalls存储正在运行的小球
                         return ;
                     }
                 }
@@ -191,7 +191,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                     let rect = ball.el.getBoundingClientRect();
                     // console.log(rect);
                     let x = rect.left - 32;
-                    let y = -(window.innerHeight-rect.top-22);
+                    let y = -(window.innerHeight-rect.top-22);//窗口的文档显示区的高度和宽度
                     el.style.display = "";
                     el.style.webKitTransform=`translate3d(0,${y}px,0)`;
                     el.style.transform=`translate3d(0,${y}px,0)`;
@@ -201,7 +201,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                 } 
             }
         },
-        enter(el,done) {
+        enter(el) {
             /* eslint-disable no-unused-vars */
             let rf = el.offsetHeight;//手动触发浏览器重绘
             this.$nextTick(()=>{
@@ -210,7 +210,6 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                 let inner = el.getElementsByClassName('inner-hook')[0];
                 inner.style.webkitTransform = 'translate3d(0,0,0)';
                 inner.style.transform='translate3d(0,0,0)';
-                el.addEventListener('transitionend', done); //Vue为了知道过渡的完成，必须设置相应的事件监听器。
             });
         },
         afterEnter(el) {
@@ -320,13 +319,13 @@ import cartcontrol from '../cartcontrol/cartcontrol'
             left 32px
             bottom 22px
             z-index 200
-            transition all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)
+            transition all .5s cubic-bezier(0.49,-0.29,0.75,0.41)
             .inner
                 width 16px
                 height 16px
                 border-radius 50%
                 background rgb(0,160,220)
-                transition all 0.4s
+                transition all .5s
     .shopcart-list
         position absolute
         top 0px
