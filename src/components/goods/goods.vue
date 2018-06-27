@@ -95,8 +95,8 @@ const ERR_OK = 0;
                  this.goods = response.data;
                 //  console.log(this.goods);
                 this.$nextTick(()=>{//$nextTick 是在下次 DOM 更新循环结束之后执行延迟回调
-                 this._initScroll();
-                 this._calculateHeight();
+                    this._initScroll();
+                    this._calculateHeight();
                 });
              }
          })
@@ -105,7 +105,7 @@ const ERR_OK = 0;
          selectMenu(index){
              let foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-hook");
              let el = foodList[index];
-             this.foodsScroll.scrollToElement(el,300);
+             this.foodsScroll.scrollToElement(el,300);//el: 滚动到的目标元素,300:滚动动画执行的时长
          },
         //  _drop(target) {
         //      this.$refs.shopcart.drop(target);
@@ -120,12 +120,12 @@ const ERR_OK = 0;
              this.menuScroll = new BScroll('.menu-wrapper',{click: true});
              this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
                  click: true,
-                 probeType: 3 //实时监测位置
+                 probeType: 3 //实时监测位置，实时派发 scroll 事件
              });
             //  this.foodsScroll = new BScroll('.foods-wrapper');
 
             this.foodsScroll.on('scroll',(pos)=>{
-                this.scrollY = Math.abs(Math.round(pos.y));
+                this.scrollY = Math.abs(Math.round(pos.y));//y：scroll 纵轴坐标
             })
          },
          _calculateHeight(){

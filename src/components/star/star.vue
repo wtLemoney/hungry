@@ -36,7 +36,7 @@
        itemClasses(){
            let result = [];
            let score = Math.floor(this.score*2)/2;//取0.5的倍数
-           let hasDecimal = score %1 !==0;
+           let hasDecimal = score %1 !==0;//是否有小数部分
            let integer = Math.floor(score);
            for(let i=0;i<integer;i++){
                result.push(CLS_ON);

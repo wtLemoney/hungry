@@ -4,7 +4,7 @@
  * @return Object {id:12345,a:b}
  */
 export function urlParse() {
-let url = window.location.search;// 如：?12345&a=b
+let url = window.location.search;// 如：?12345&a=b,从问号 (?) 开始的 URL（查询部分）
 let obj = {};
 let reg = /[?&][^?&]+=[^?&]+/g;
 let arr = url.match(reg);

@@ -183,7 +183,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
             window.alert(`支付${this.totalPrice}元`)
         },
 
-        beforeEnter(el) {
+        beforeEnter(el) { // / 设置过渡进入之前的组件状态
             let count=this.balls.length;
             while(count--) {
                 let ball = this.balls[count];
@@ -201,10 +201,10 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                 } 
             }
         },
-        enter(el) {
+        enter(el) { // 设置过渡进入完成时的组件状态
             /* eslint-disable no-unused-vars */
             let rf = el.offsetHeight;//手动触发浏览器重绘
-            this.$nextTick(()=>{
+            this.$nextTick(()=>{ 
                 el.style.webKitTransform='translate3d(0,0,0)';
                 el.style.transform='translate3d(0,0,0)';
                 let inner = el.getElementsByClassName('inner-hook')[0];
@@ -212,7 +212,7 @@ import cartcontrol from '../cartcontrol/cartcontrol'
                 inner.style.transform='translate3d(0,0,0)';
             });
         },
-        afterEnter(el) {
+        afterEnter(el) { // 设置过渡进入完成之后的组件状态
             let ball = this.dropBalls.shift(); // 完成一次动画就删除一个dropBalls的小球
             if(ball){
                 ball.show = false;
